@@ -92,29 +92,92 @@ class Body extends GetView<ProcessoSeletivoController> {
   }
 
   _buildListView(List<ProcessoSeletivo> seletivos) {
-    return ListView.separated(
-      scrollDirection: Axis.vertical,
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          mainAxisSpacing: 1,
+          crossAxisSpacing: 1,
+          childAspectRatio: 1,
+          mainAxisExtent: 450),
+      shrinkWrap: true,
       itemCount: seletivos.length,
-      separatorBuilder: (BuildContext context, index) => const Divider(),
-      itemBuilder: (context, index) {
-        return ListTileTheme(
-          dense: true,
-          child: ExpansionTile(
-            title: Text('Edital: ${seletivos[index].edital}'),
-            subtitle: Text('Cargo: ${seletivos[index].cargo}'),
-            children: [
-              _tile(
-                'Inicio das Inscrições: ${seletivos[index].dataInicioInscricoes} Hs',
-                'Fim das Inscrições: ${seletivos[index].dataFimInscricoes} Hs',
-              ),
-              _tile(
-                'Inicio das Retificações: ${seletivos[index].dataInicioRetificacao} Hs',
-                'Fim das Retificações: ${seletivos[index].dataFimRetificacao} Hs',
-              ),
-            ],
+      itemBuilder: ((context, index) {
+        return Card(
+          margin: const EdgeInsets.all(16.0),
+          elevation: 8,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 48.0,
+                  child: Center(
+                    child: Text('Informações do Edital'),
+                  ),
+                ),
+                Column(
+                  children: [
+                    ListTile(
+                      leading: Text('Edital:'),
+                      trailing: Text('${seletivos[index].edital}'),
+                    ),
+                    ListTile(
+                      leading: const Text('Cargo:'),
+                      trailing: Text('${seletivos[index].cargo}'),
+                    ),
+                    ListTile(
+                      title: const Text('Periodo de Inscrições:'),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                'Início: ${seletivos[index].dataInicioInscricoes} Hs'),
+                            const SizedBox(
+                              height: 4.0,
+                            ),
+                            Text(
+                                'Fim: ${seletivos[index].dataFimInscricoes} Hs')
+                          ],
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text('Periodo de Retificações:'),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                                'Início: ${seletivos[index].dataInicioRetificacao} Hs'),
+                            const SizedBox(
+                              height: 4.0,
+                            ),
+                            Text(
+                                'Fim: ${seletivos[index].dataFimRetificacao} Hs')
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                    ListTile(
+                      trailing: ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.person),
+                        label: const Text('Inscrever-se'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
-      },
+      }),
     );
   }
 

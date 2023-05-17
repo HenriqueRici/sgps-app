@@ -3,62 +3,26 @@ import 'package:get/get.dart';
 import 'package:sgps/domain/controller/processo_seletivo_controller.dart';
 import 'package:sgps/domain/models/processo_seletivo.dart';
 
-class Body extends GetView<ProcessoSeletivoController> {
-  const Body({super.key});
+class BodyHome extends GetView<ProcessoSeletivoController> {
+  const BodyHome({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.75,
-      child: Container(
-        color: const Color.fromARGB(255, 62, 65, 68),
-        child: Row(
-          children: [_sidebar(context), _bodyHome(context)],
-        ),
-      ),
-    );
-  }
-
-  Widget _sidebar(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.15,
-      color: const Color.fromRGBO(33, 35, 37, 1),
-      child: Column(children: [
-        _buildButton(context, "Início", Icons.home),
-        _buildButton(context, "Área do Participante", Icons.person),
-        Expanded(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: _buildButton(
-                context, 'Adiministrador', Icons.admin_panel_settings),
-          ),
-        )
-      ]),
-    );
-  }
-
-  Widget _buildButton(BuildContext context, String label, IconData icon) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.05,
-        width: MediaQuery.of(context).size.width,
-        child: ElevatedButton.icon(
-          onPressed: () {},
-          icon: Icon(icon),
-          label: Text(label),
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, double.infinity),
-            side: const BorderSide(width: 2.0, color: Colors.white),
-            backgroundColor: const Color.fromRGBO(33, 35, 37, 1),
-          ),
-        ),
+      width: MediaQuery.of(context).size.width * 0.80,
+      child: Flex(
+        direction: Axis.vertical,
+        // color: const Color.fromARGB(255, 62, 65, 68),
+        // child: _bodyHome(context),
+        children: [_bodyHome(context)],
       ),
     );
   }
 
   Widget _bodyHome(BuildContext context) {
     return Expanded(
+      flex: 1,
       child: Column(
         children: [
           Container(
@@ -87,8 +51,11 @@ class Body extends GetView<ProcessoSeletivoController> {
           ),
           Expanded(
             flex: 9,
-            child: Obx(
-                () => _buildListView(context, controller.seletivos$.toList())),
+            child: Container(
+              color: const Color.fromARGB(255, 62, 65, 68),
+              child: Obx(() =>
+                  _buildListView(context, controller.seletivos$.toList())),
+            ),
           ),
         ],
       ),

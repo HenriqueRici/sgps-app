@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sgps/domain/controller/processo_seletivo_controller.dart';
+import 'package:sgps/domain/models/processo_seletivo.dart';
 
-class Body extends StatelessWidget {
+class Body extends GetView<ProcessoSeletivoController> {
   const Body({super.key});
 
   @override
@@ -8,7 +11,7 @@ class Body extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.75,
       child: Row(
-        children: [_sidebar(context), _boryHome(context)],
+        children: [_sidebar(context), _bodyHome(context)],
       ),
     );
   }
@@ -51,36 +54,88 @@ class Body extends StatelessWidget {
     );
   }
 
-  Widget _boryHome(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.85,
-      color: const Color.fromARGB(255, 62, 65, 68),
-      child: Column(children: [
-        Container(
-          padding: const EdgeInsets.all(20.0),
-          child: const Column(children: [
-            Text(
-              'Processo(s) Seletivo(s)',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24.0,
-                  color: Colors.white),
+  Widget _bodyHome(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          Container(
+            height: 80,
+            width: MediaQuery.of(context).size.width * 0.85,
+            color: const Color.fromARGB(255, 62, 65, 68),
+            padding: const EdgeInsets.all(8.0),
+            child: const Column(
+              children: [
+                Text(
+                  'Processo(s) Seletivo(s)',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                      color: Colors.white),
+                ),
+                Text(
+                  'Abaixo estão listados os editais disponíveis',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              'Abaixo estão listados os editais disponíveis',
-              style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.grey,
-              ),
-            ),
-          ]),
-        ),
-        _listProcessoSeletivo(),
-      ]),
+          ),
+          Expanded(
+            flex: 9,
+            child: Obx(() => _buildListView(controller.seletivos$.toList())),
+          )
+        ],
+      ),
     );
   }
 
-  Widget _listProcessoSeletivo() {
-    return Container();
+  _buildListView(List<ProcessoSeletivo> seletivos) {
+    return ListView.separated(
+      scrollDirection: Axis.vertical,
+      itemCount: seletivos.length,
+      separatorBuilder: (BuildContext context, index) => const Divider(),
+      itemBuilder: (context, index) {
+        return ListTileTheme(
+          dense: true,
+          child: ExpansionTile(
+            title: Text('Edital: ${seletivos[index].edital}'),
+            subtitle: Text('Cargo: ${seletivos[index].cargo}'),
+            children: [
+              _tile(
+                'Inicio das Inscrições: ${seletivos[index].dataInicioInscricoes} Hs',
+                'Fim das Inscrições: ${seletivos[index].dataFimInscricoes} Hs',
+              ),
+              _tile(
+                'Inicio das Retificações: ${seletivos[index].dataInicioRetificacao} Hs',
+                'Fim das Retificações: ${seletivos[index].dataFimRetificacao} Hs',
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  _tile(String label1, String label2) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListTileTheme(
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 48.0),
+              child: Text(label1),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(right: 248.0),
+              child: Text(label2),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

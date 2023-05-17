@@ -15,10 +15,8 @@ class ProcessoSeletivoProvider {
     final model = response.data
         .map<ProcessoSeletivo>((data) => ProcessoSeletivo.fromJson(data))
         .toList();
-    if (response.statusCode == 200) {
-      return model;
-    } else {
-      throw Exception('Erro  método GET');
-    }
+    //if (response.statusCode == 200) {
+    return model;
+    //}
   }
 }

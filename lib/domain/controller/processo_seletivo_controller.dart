@@ -4,15 +4,28 @@ import '../models/processo_seletivo.dart';
 import '../repositories/processo_eletivo_repository.dart';
 
 class ProcessoSeletivoController extends GetxController {
+  final _seletivos$ = <ProcessoSeletivo>[].obs;
   ProcessoSeletivoRepository repository;
 
   ProcessoSeletivoController({required this.repository});
 
-  late List<ProcessoSeletivo> _processoSeletivoList;
-  List<ProcessoSeletivo> get seletivos => _processoSeletivoList;
+  RxList<ProcessoSeletivo> get seletivos$ => _seletivos$;
 
-  Future<void> fetchProcessoSeletivo() async {
-    _processoSeletivoList = await repository.fetchProcessoSeletivo();
-    update();
+  @override
+  void onInit() async {
+    await _fetchProcessosSeletivo();
+    super.onInit();
+  }
+
+  @override
+  void onReady() async {
+    await _fetchProcessosSeletivo();
+    super.onReady();
+  }
+
+  Future<void> _fetchProcessosSeletivo() async {
+    var processoSeletivoList = await repository.fetchProcessoSeletivo();
+    print(processoSeletivoList);
+    _seletivos$.assignAll(processoSeletivoList);
   }
 }

@@ -25,7 +25,6 @@ class ProcessoSeletivoController extends GetxController {
 
   Future<void> _fetchProcessosSeletivo() async {
     var processoSeletivoList = await repository.fetchProcessoSeletivo();
-    print(processoSeletivoList);
     _seletivos$.assignAll(processoSeletivoList);
   }
 }

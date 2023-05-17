@@ -11,7 +11,6 @@ class ProcessoSeletivoProvider {
 
   Future<List<ProcessoSeletivo>> fetchProcessoSeletivo() async {
     final response = await dio.get('$api/processo-seletivo');
-    print(response.data);
     final model = response.data
         .map<ProcessoSeletivo>((data) => ProcessoSeletivo.fromJson(data))
         .toList();

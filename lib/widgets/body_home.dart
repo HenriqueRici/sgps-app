@@ -13,8 +13,6 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
       width: MediaQuery.of(context).size.width * 0.80,
       child: Flex(
         direction: Axis.vertical,
-        // color: const Color.fromARGB(255, 62, 65, 68),
-        // child: _bodyHome(context),
         children: [_bodyHome(context)],
       ),
     );
@@ -197,7 +195,12 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
                       ),
                       ListTile(
                         trailing: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(
+                              '/inscricoes',
+                              arguments: '${seletivos[index].id}',
+                            );
+                          },
                           icon: const Icon(Icons.add),
                           label: const Text('Inscrever-se'),
                           style: ElevatedButton.styleFrom(

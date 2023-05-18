@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -20,27 +21,31 @@ class SideBar extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.15,
       color: const Color.fromRGBO(33, 35, 37, 1),
       child: Column(children: [
-        _buildButton(context, "Início", Icons.home),
-        _buildButton(context, "Área do Participante", Icons.person),
+        _buildButton(context, "Início", Icons.home, '/'),
+        _buildButton(context, "Área do Participante", Icons.person,
+            '/'), // '/login-participante'
         Expanded(
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: _buildButton(
-                context, 'Adiministrador', Icons.admin_panel_settings),
+            child: _buildButton(context, 'Adiministrador',
+                Icons.admin_panel_settings, '/'), // '/login-adm'
           ),
         )
       ]),
     );
   }
 
-  Widget _buildButton(BuildContext context, String label, IconData icon) {
+  Widget _buildButton(
+      BuildContext context, String label, IconData icon, String path) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: SizedBox(
         height: MediaQuery.of(context).size.height * 0.05,
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            Get.offAllNamed(path);
+          },
           icon: Icon(icon),
           label: Text(label),
           style: ElevatedButton.styleFrom(

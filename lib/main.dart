@@ -3,8 +3,10 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sgps/components/home.dart';
-import 'package:sgps/components/home_copy.dart';
+import 'package:sgps/components/inscricoes.dart';
 import 'package:sgps/processo_seletivo_binding.dart';
+
+import 'components/home_copy2.dart';
 
 void main() async {
   setUrlStrategy(PathUrlStrategy());
@@ -29,8 +31,8 @@ class MyApp extends StatelessWidget {
           page: (() => const HomePage()),
         ),
         GetPage(
-          name: '/home',
-          page: (() => const HomePageCopy()),
+          name: '/inscricoes',
+          page: (() => const InscricoesPage()),
         ),
       ],
     );

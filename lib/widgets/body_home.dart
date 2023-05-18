@@ -73,7 +73,7 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
           mainAxisSpacing: 1,
           crossAxisSpacing: 1,
           childAspectRatio: 1,
-          mainAxisExtent: 450,
+          mainAxisExtent: 420,
         ),
         shrinkWrap: true,
         itemCount: seletivos.length,

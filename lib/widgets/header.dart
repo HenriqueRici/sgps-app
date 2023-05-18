@@ -25,6 +25,7 @@ class Header extends StatelessWidget {
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
+                decoration: TextDecoration.none,
               ),
             )),
           ),

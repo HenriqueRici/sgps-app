@@ -25,6 +25,7 @@ class Footer extends StatelessWidget {
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
+                decoration: TextDecoration.none,
               ),
             )),
           ),

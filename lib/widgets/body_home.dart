@@ -33,15 +33,18 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
                 Text(
                   'Processo(s) Seletivo(s)',
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
-                      color: Colors.white),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24.0,
+                    color: Colors.white,
+                    decoration: TextDecoration.none,
+                  ),
                 ),
                 Text(
                   'Abaixo estão listados os editais disponíveis',
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.grey,
+                    decoration: TextDecoration.none,
                   ),
                 ),
               ],

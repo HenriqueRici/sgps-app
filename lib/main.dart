@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:sgps/components/home.dart';
-import 'package:sgps/components/inscricoes.dart';
+import 'package:sgps/components/base_layout.dart';
 import 'package:sgps/processo_seletivo_binding.dart';
-
-import 'components/home_copy2.dart';
+import 'package:sgps/widgets/body_home.dart';
+import 'package:sgps/widgets/body_inscricoes.dart';
 
 void main() async {
   setUrlStrategy(PathUrlStrategy());
@@ -24,15 +23,21 @@ class MyApp extends StatelessWidget {
       initialBinding: ProcessoSeletivoBinding(),
       title: 'SGPS',
       initialRoute: '/',
-      home: const HomePage(),
+      home: const BaseLayout(
+        child: BodyHome(),
+      ),
       getPages: [
         GetPage(
           name: '/',
-          page: (() => const HomePage()),
+          page: (() => const BaseLayout(
+                child: BodyHome(),
+              )),
         ),
         GetPage(
           name: '/inscricoes',
-          page: (() => const InscricoesPage()),
+          page: (() => const BaseLayout(
+                child: BodyInscricoes(),
+              )),
         ),
       ],
     );

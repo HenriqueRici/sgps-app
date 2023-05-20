@@ -3,7 +3,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sgps/components/base_layout.dart';
-import 'package:sgps/processo_seletivo_binding.dart';
+import 'package:sgps/global_binding.dart';
 import 'package:sgps/widgets/body_home.dart';
 import 'package:sgps/widgets/body_inscricoes.dart';
 
@@ -20,17 +20,19 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      initialBinding: ProcessoSeletivoBinding(),
+      initialBinding: GlobalBinding(),
       title: 'SGPS',
       initialRoute: '/',
-      home: const BaseLayout(
+      home: BaseLayout(
         child: BodyHome(),
       ),
       getPages: [
         GetPage(
           name: '/',
           page: (() => const BaseLayout(
-                child: BodyHome(),
+                child: Expanded(
+                  child: Text('data'),
+                ),
               )),
         ),
         GetPage(

@@ -1,5 +1,6 @@
-import 'package:dio/dio.dart';
+import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import '../models/processo_seletivo.dart';
 
 const api = 'http://localhost:8080/sgps';
@@ -14,8 +15,14 @@ class ProcessoSeletivoProvider {
     final model = response.data
         .map<ProcessoSeletivo>((data) => ProcessoSeletivo.fromJson(data))
         .toList();
-    //if (response.statusCode == 200) {
     return model;
-    //}
+    //fazer tratamento de exceção
+  }
+
+  Future<bool> checkCpfByedital(int id, String cpf) async {
+    final response =
+        await dio.get('$api/processo-seletivo/$id/verifica-cpf/$cpf');
+    Map<String, dynamic> status = jsonDecode(response.toString());
+    return status['verificaCPFByEdital'];
   }
 }

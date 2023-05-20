@@ -1,10 +1,15 @@
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:sgps/domain/controller/processo_seletivo_controller.dart';
 import 'package:sgps/domain/models/processo_seletivo.dart';
 
 class BodyHome extends GetView<ProcessoSeletivoController> {
-  const BodyHome({super.key});
+  BodyHome({super.key});
+
+  final TextEditingController _textEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -199,9 +204,81 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
                       ListTile(
                         trailing: ElevatedButton.icon(
                           onPressed: () {
-                            Get.toNamed(
-                              '/inscricoes',
-                              arguments: '${seletivos[index].id}',
+                            showDialog(
+                              context: context,
+                              builder: ((context) {
+                                return AlertDialog(
+                                  title: const Text('Informe seu CPF:'),
+                                  content: TextField(
+                                    controller: _textEditingController,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: <TextInputFormatter>[
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      LengthLimitingTextInputFormatter(14),
+                                      MaskTextInputFormatter(
+                                          mask: '###.###.###-##',
+                                          filter: {"#": RegExp(r'[0-9]')})
+                                    ],
+                                    decoration: const InputDecoration(
+                                        hintText: 'Apenas Números'),
+                                  ),
+                                  actions: [
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        if (!CPFValidator.isValid(
+                                            _textEditingController.text)) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext builder) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                      'CPF inválido!'),
+                                                  content: const Text(
+                                                      'Informe um CPF valido!!'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Text('OK'),
+                                                    ),
+                                                  ],
+                                                );
+                                              });
+                                        } else {
+                                          if (await controller.checkCpfByEdital(
+                                              seletivos[index].id!,
+                                              _textEditingController.text)) {
+                                            print(
+                                                "Ja contem inscrição nesse edital");
+                                          } else if (await controller.checkCpf(
+                                              _textEditingController.text)) {
+                                            print(
+                                                'Ja contetm inscricao em outro edital');
+                                          } else {
+                                            _textEditingController.text = '';
+                                            print(_textEditingController.text);
+                                            Get.toNamed(
+                                              '/inscricoes',
+                                              arguments:
+                                                  '${seletivos[index].id}',
+                                            );
+                                          }
+                                        }
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        side: const BorderSide(
+                                          width: 2.0,
+                                          color: Color.fromARGB(255, 0, 0, 0),
+                                        ),
+                                        backgroundColor: const Color.fromARGB(
+                                            255, 16, 94, 172),
+                                      ),
+                                      child: const Text('Verificar'),
+                                    ),
+                                  ],
+                                );
+                              }),
                             );
                           },
                           icon: const Icon(Icons.add),

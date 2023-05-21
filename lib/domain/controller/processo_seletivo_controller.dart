@@ -6,8 +6,8 @@ import '../repositories/processo_seletivo_repository.dart';
 
 class ProcessoSeletivoController extends GetxController {
   final _seletivos$ = <ProcessoSeletivo>[].obs;
+  final _participante = ''.obs;
   ProcessoSeletivoRepository repository;
-
   ParticipanteRepository participanteRepository;
 
   ProcessoSeletivoController(
@@ -40,5 +40,11 @@ class ProcessoSeletivoController extends GetxController {
   Future<bool> checkCpf(String cpf) async {
     final response = await participanteRepository.checkCpf(cpf);
     return response;
+  }
+
+  Future<void> createParticipante(int id, String cpf) async {
+    final response =
+        await participanteRepository.createParticipanteCadastrado(id, cpf);
+    _participante.value = response.data.toString();
   }
 }

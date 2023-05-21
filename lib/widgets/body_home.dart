@@ -2,7 +2,6 @@ import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:sgps/domain/controller/processo_seletivo_controller.dart';
 import 'package:sgps/domain/models/processo_seletivo.dart';
 
@@ -214,10 +213,7 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
                                     keyboardType: TextInputType.number,
                                     inputFormatters: <TextInputFormatter>[
                                       FilteringTextInputFormatter.digitsOnly,
-                                      LengthLimitingTextInputFormatter(14),
-                                      MaskTextInputFormatter(
-                                          mask: '###.###.###-##',
-                                          filter: {"#": RegExp(r'[0-9]')})
+                                      LengthLimitingTextInputFormatter(11),
                                     ],
                                     decoration: const InputDecoration(
                                         hintText: 'Apenas Números'),
@@ -249,15 +245,104 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
                                           if (await controller.checkCpfByEdital(
                                               seletivos[index].id!,
                                               _textEditingController.text)) {
-                                            print(
-                                                "Ja contem inscrição nesse edital");
+                                            if (context.mounted) {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext builder) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          'Esse CPF já consta inscrito no Edital selecionado!'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            _textEditingController
+                                                                .text = '';
+                                                            Navigator.pop(
+                                                                context);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child:
+                                                              const Text('OK'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
+                                            }
                                           } else if (await controller.checkCpf(
                                               _textEditingController.text)) {
-                                            print(
-                                                'Ja contetm inscricao em outro edital');
+                                            if (context.mounted) {
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext builder) {
+                                                    return AlertDialog(
+                                                      title: const Text(
+                                                          'Este CPF já consta inscrito em outro Edital!'),
+                                                      content: const Text(
+                                                          'Deseja se inscrever nesse Edital tambem?'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            await controller
+                                                                .createParticipante(
+                                                                    seletivos[
+                                                                            index]
+                                                                        .id!,
+                                                                    _textEditingController
+                                                                        .text);
+                                                            _textEditingController
+                                                                .text = '';
+                                                            if (context
+                                                                .mounted) {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          builder) {
+                                                                    return AlertDialog(
+                                                                      title: const Text(
+                                                                          'Inscrição fetita com sucesso'),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                            Navigator.pop(context);
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child:
+                                                                              const Text('OK'),
+                                                                        )
+                                                                      ],
+                                                                    );
+                                                                  });
+                                                              //confirmar cadastro
+                                                            }
+                                                          },
+                                                          child:
+                                                              const Text('Sim'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            _textEditingController
+                                                                .text = '';
+                                                            Navigator.pop(
+                                                                context);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child:
+                                                              const Text('Não'),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
+                                            }
                                           } else {
                                             _textEditingController.text = '';
-                                            print(_textEditingController.text);
                                             Get.toNamed(
                                               '/inscricoes',
                                               arguments:

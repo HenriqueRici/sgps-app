@@ -16,17 +16,17 @@ class BodyInscricoes extends GetView<ParticipanteController> {
         child: ElevatedButton(
           onPressed: () {
             //controller.checkCpfByEdital('3', '06465533138');
-            controller.create(Participante(
-                nome: 'Joao',
-                cpf: '64765640051',
-                confirmacaoCpf: '64765640051',
-                dataNascimento: '09/09/1999',
-                dataIngresso: '02/02/2020',
-                classe: 'C',
-                nivel: 'N012',
-                senha: 'a123',
-                confirmacaoSenha: 'a123',
-                idProcessoSeletivo: '1'));
+            //   controller.create(Participante(
+            //       nome: 'Joao',
+            //       cpf: '64765640051',
+            //       confirmacaoCpf: '64765640051',
+            //       dataNascimento: '09/09/1999',
+            //       dataIngresso: '02/02/2020',
+            //       classe: 'C',
+            //       nivel: 'N012',
+            //       senha: 'a123',
+            //       confirmacaoSenha: 'a123',
+            //       idProcessoSeletivo: '1'));
           },
           child: const Text('Fazer Requisição'),
           // Text(

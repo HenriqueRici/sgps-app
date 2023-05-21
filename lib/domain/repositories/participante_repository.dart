@@ -14,4 +14,8 @@ class ParticipanteRepository {
   Future<bool> checkCpf(String cpf) async {
     return await provider.checkCpf(cpf);
   }
+
+  Future<Response> createParticipanteCadastrado(id, String cpf) async {
+    return await provider.createParticipanteCadastrado(id, cpf);
+  }
 }

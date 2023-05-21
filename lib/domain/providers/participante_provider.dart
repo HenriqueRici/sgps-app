@@ -22,4 +22,17 @@ class ParticipanteProvider {
     Map<String, dynamic> status = jsonDecode(response.toString());
     return status['verificaCPF'];
   }
+
+  Future<Response> createParticipanteCadastrado(int id, String cpf) async {
+    final response =
+        await dio.post('$api/participantes/inscricao', data: toJson(id, cpf));
+    return response;
+  }
+
+  Map<String, dynamic> toJson(int id, String cpf) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['cpf'] = cpf;
+    data['idProcessoSeletivo'] = id;
+    return data;
+  }
 }

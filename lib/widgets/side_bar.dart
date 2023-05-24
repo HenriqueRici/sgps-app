@@ -44,7 +44,7 @@ class SideBar extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton.icon(
           onPressed: () {
-            Get.offAllNamed(path);
+            Get.toNamed(path);
           },
           icon: Icon(icon),
           label: Text(label),

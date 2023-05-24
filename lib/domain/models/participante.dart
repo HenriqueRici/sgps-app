@@ -8,7 +8,7 @@ class Participante {
   String? nivel;
   String? senha;
   String? confirmacaoSenha;
-  String? idProcessoSeletivo;
+  int? idProcessoSeletivo;
 
   Participante(
       {this.nome,

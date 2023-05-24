@@ -29,15 +29,13 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/',
-          page: (() => const BaseLayout(
-                child: Expanded(
-                  child: Text('data'),
-                ),
+          page: (() => BaseLayout(
+                child: BodyHome(),
               )),
         ),
         GetPage(
           name: '/inscricoes',
-          page: (() => const BaseLayout(
+          page: (() => BaseLayout(
                 child: BodyInscricoes(),
               )),
         ),

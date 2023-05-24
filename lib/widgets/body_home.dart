@@ -13,8 +13,8 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.75,
-      width: MediaQuery.of(context).size.width * 0.80,
+      //height: MediaQuery.of(context).size.height * 0.75,
+      //width: MediaQuery.of(context).size.width * 0.80,
       child: Flex(
         direction: Axis.vertical,
         children: [_bodyHome(context)],
@@ -29,7 +29,7 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
         children: [
           Container(
             height: 80,
-            width: MediaQuery.of(context).size.width * 0.85,
+            width: MediaQuery.of(context).size.width,
             color: const Color.fromARGB(255, 62, 65, 68),
             padding: const EdgeInsets.all(8.0),
             child: const Column(

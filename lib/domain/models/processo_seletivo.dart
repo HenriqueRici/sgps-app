@@ -7,6 +7,7 @@ class ProcessoSeletivo {
   String? dataFimInscricoes;
   String? dataInicioRetificacao;
   String? dataFimRetificacao;
+  String? pathPdf;
 
   ProcessoSeletivo(
       {this.id,
@@ -16,7 +17,8 @@ class ProcessoSeletivo {
       this.dataInicioInscricoes,
       this.dataFimInscricoes,
       this.dataInicioRetificacao,
-      this.dataFimRetificacao});
+      this.dataFimRetificacao,
+      this.pathPdf});
 
   ProcessoSeletivo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -27,6 +29,7 @@ class ProcessoSeletivo {
     dataFimInscricoes = json['dataFimInscricoes'];
     dataInicioRetificacao = json['dataInicioRetificacao'];
     dataFimRetificacao = json['dataFimRetificacao'];
+    pathPdf = json['pathPdf'];
   }
 
   Map<String, dynamic> toJson() {
@@ -39,6 +42,7 @@ class ProcessoSeletivo {
     data['dataFimInscricoes'] = dataFimInscricoes;
     data['dataInicioRetificacao'] = dataInicioRetificacao;
     data['dataFimRetificacao'] = dataFimRetificacao;
+    data['pathPdf'] = pathPdf;
     return data;
   }
 }

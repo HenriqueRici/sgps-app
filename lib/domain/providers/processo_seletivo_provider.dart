@@ -25,4 +25,11 @@ class ProcessoSeletivoProvider {
     Map<String, dynamic> status = jsonDecode(response.toString());
     return status['verificaCPFByEdital'];
   }
+
+  Future<ProcessoSeletivo> fetchProcessoSeletivoById(int id) async {
+    final response = await dio.get('$api/processo-seletivo/$id');
+    final model = response.data
+        .map<ProcessoSeletivo>((data) => ProcessoSeletivo.fromJson(data));
+    return model;
+  }
 }

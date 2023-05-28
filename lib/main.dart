@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/inscricoes',
-          page: (() => BaseLayout(
+          page: (() => const BaseLayout(
                 child: BodyInscricoes(),
               )),
         ),

@@ -27,7 +27,7 @@ class SideBar extends StatelessWidget {
         Expanded(
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: _buildButton(context, 'Adiministrador',
+            child: _buildButton(context, 'Administrador',
                 Icons.admin_panel_settings, '/'), // '/login-adm'
           ),
         )

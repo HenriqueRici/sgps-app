@@ -13,4 +13,8 @@ class ProcessoSeletivoRepository {
   Future<bool> checkCpfByEdital(int id, String cpf) async {
     return await provider.checkCpfByedital(id, cpf);
   }
+
+  Future<ProcessoSeletivo> fetchProcessoSeletivoById(int id) async {
+    return await provider.fetchProcessoSeletivoById(id);
+  }
 }

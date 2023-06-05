@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sgps/domain/repositories/participante_repository.dart';
 
@@ -5,6 +6,19 @@ import '../models/processo_seletivo.dart';
 import '../repositories/processo_seletivo_repository.dart';
 
 class ProcessoSeletivoController extends GetxController {
+  TextEditingController editalController = TextEditingController();
+  TextEditingController cargoController = TextEditingController();
+  TextEditingController dataInicioInscricoes = TextEditingController();
+  TextEditingController dataFimInscricoes = TextEditingController();
+  TextEditingController dataInicioRetificacao = TextEditingController();
+  TextEditingController dataFimRetificacao = TextEditingController();
+  TextEditingController pathPdf = TextEditingController();
+  TextEditingController hsInicioInscricoes = TextEditingController();
+  TextEditingController hsFimInscricoes = TextEditingController();
+  TextEditingController hsInicioRetificacao = TextEditingController();
+  TextEditingController hsFimRetificacao = TextEditingController();
+  TextEditingController anoReferenciaController = TextEditingController();
+
   final _seletivos$ = <ProcessoSeletivo>[].obs;
   final _participante = ''.obs;
   ProcessoSeletivoRepository repository;
@@ -17,17 +31,38 @@ class ProcessoSeletivoController extends GetxController {
 
   @override
   void onInit() async {
-    await _fetchProcessosSeletivo();
+    await fetchProcessosSeletivo();
     super.onInit();
   }
 
   @override
   void onReady() async {
-    await _fetchProcessosSeletivo();
+    await fetchProcessosSeletivo();
     super.onReady();
   }
 
-  Future<void> _fetchProcessosSeletivo() async {
+  void disposeDados() {
+    editalController.clear();
+    cargoController.clear();
+    dataInicioInscricoes.clear();
+    dataFimInscricoes.clear();
+    dataInicioRetificacao.clear();
+    dataFimRetificacao.clear();
+    pathPdf.clear();
+    hsInicioInscricoes.clear();
+    hsFimInscricoes.clear();
+    hsInicioRetificacao.clear();
+    hsFimRetificacao.clear();
+    anoReferenciaController.clear();
+  }
+
+  Future<void> create(ProcessoSeletivo processoSeletivo) async {
+    await repository.createProcessoSeletivo(processoSeletivo);
+
+    disposeDados();
+  }
+
+  Future<void> fetchProcessosSeletivo() async {
     var processoSeletivoList = await repository.fetchProcessoSeletivo();
     _seletivos$.assignAll(processoSeletivoList);
   }
@@ -46,5 +81,24 @@ class ProcessoSeletivoController extends GetxController {
     final response =
         await participanteRepository.createParticipanteCadastrado(id, cpf);
     _participante.value = response.data.toString();
+  }
+
+  Future<void> refificar(ProcessoSeletivo processoSeletivo) async {
+    await repository.updateProcessoSeletivo(processoSeletivo);
+  }
+
+  ProcessoSeletivo dadosProcessoSeletivo() {
+    return ProcessoSeletivo(
+      edital: editalController.text,
+      anoReferencia: int.parse(anoReferenciaController.text),
+      cargo: cargoController.text,
+      pathPdf: pathPdf.text,
+      dataInicioInscricoes:
+          '${dataInicioInscricoes.text} ${hsInicioInscricoes.text}',
+      dataFimInscricoes: '${dataFimInscricoes.text} ${hsFimInscricoes.text}',
+      dataInicioRetificacao:
+          '${dataInicioRetificacao.text} ${hsInicioRetificacao.text}',
+      dataFimRetificacao: '${dataFimRetificacao.text} ${hsFimRetificacao.text}',
+    );
   }
 }

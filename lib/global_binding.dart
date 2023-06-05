@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:sgps/domain/controller/login_controller.dart';
 import '../domain/controller/processo_seletivo_controller.dart';
 import '../domain/providers/processo_seletivo_provider.dart';
 import 'domain/controller/participante_controller.dart';
@@ -19,5 +20,7 @@ class GlobalBinding extends Bindings {
     Get.lazyPut<ParticipanteController>(() => ParticipanteController(
         repository: ParticipanteRepository(
             provider: ParticipanteProvider(dio: Dio()))));
+
+    Get.lazyPut<LoginController>(() => LoginController(dio: Dio()));
   }
 }

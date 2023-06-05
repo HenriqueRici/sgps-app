@@ -2,6 +2,7 @@ import 'package:cpf_cnpj_validator/cpf_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:sgps/domain/controller/processo_seletivo_controller.dart';
 import 'package:sgps/domain/models/processo_seletivo.dart';
@@ -14,9 +15,8 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.onInit();
     return SizedBox(
-      //height: MediaQuery.of(context).size.height * 0.75,
-      //width: MediaQuery.of(context).size.width * 0.80,
       child: Flex(
         direction: Axis.vertical,
         children: [_bodyHome(context)],
@@ -246,148 +246,161 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
       BuildContext context, List<ProcessoSeletivo> seletivos, int index) {
     return ListTile(
       trailing: ElevatedButton.icon(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: ((context) {
-              return AlertDialog(
-                title: const Text('Informe seu CPF:'),
-                content: TextField(
-                  controller: _textEditingController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(14),
-                    MaskTextInputFormatter(
-                        mask: '###.###.###-##', filter: {'#': RegExp(r'[0-9]')})
-                  ],
-                  decoration: const InputDecoration(hintText: 'Apenas Números'),
-                ),
-                actions: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      if (!CPFValidator.isValid(_textEditingController.text)) {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext builder) {
-                              return AlertDialog(
-                                title: const Text('CPF inválido!'),
-                                content: const Text('Informe um CPF valido!!'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              );
-                            });
-                      } else {
-                        if (await controller.checkCpfByEdital(
-                            seletivos[index].id!,
-                            _textEditingController.text)) {
-                          if (context.mounted) {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext builder) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                        'Esse CPF já consta inscrito no Edital selecionado!'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          _textEditingController.text = '';
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          }
-                        } else if (await controller
-                            .checkCpf(_textEditingController.text)) {
-                          if (context.mounted) {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext builder) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                        'Este CPF já consta inscrito em outro Edital!'),
-                                    content: const Text(
-                                        'Deseja se inscrever nesse Edital tambem?'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () async {
-                                          await controller.createParticipante(
-                                              seletivos[index].id!,
-                                              _textEditingController.text);
-                                          _textEditingController.text = '';
-                                          if (context.mounted) {
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext builder) {
-                                                  return AlertDialog(
-                                                    title: const Text(
-                                                        'Inscrição fetita com sucesso'),
-                                                    actions: [
-                                                      TextButton(
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                          Navigator.pop(
-                                                              context);
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                        child: const Text('OK'),
-                                                      )
-                                                    ],
-                                                  );
-                                                });
-                                            //confirmar cadastro
-                                          }
-                                        },
-                                        child: const Text('Sim'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          _textEditingController.text = '';
-                                          Navigator.pop(context);
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('Não'),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          }
-                        } else {
-                          Get.toNamed('/inscricoes', arguments: {
-                            'idSeletivo': '${seletivos[index].id}',
-                            'cpf': _textEditingController.text
-                          });
-                          _textEditingController.text = '';
-                        }
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      side: const BorderSide(
-                        width: 2.0,
-                        color: Color.fromARGB(255, 0, 0, 0),
+        onPressed: checkPeriodoInscricoes(seletivos, index)
+            ? () {
+                showDialog(
+                  context: context,
+                  builder: ((context) {
+                    return AlertDialog(
+                      title: const Text('Informe seu CPF:'),
+                      content: TextField(
+                        controller: _textEditingController,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(14),
+                          MaskTextInputFormatter(
+                              mask: '###.###.###-##',
+                              filter: {'#': RegExp(r'[0-9]')})
+                        ],
+                        decoration:
+                            const InputDecoration(hintText: 'Apenas Números'),
                       ),
-                      backgroundColor: const Color.fromARGB(255, 16, 94, 172),
-                    ),
-                    child: const Text('Verificar'),
-                  ),
-                ],
-              );
-            }),
-          );
-        },
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (!CPFValidator.isValid(
+                                _textEditingController.text)) {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builder) {
+                                    return AlertDialog(
+                                      title: const Text('CPF inválido!'),
+                                      content:
+                                          const Text('Informe um CPF valido!!'),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            } else {
+                              if (await controller.checkCpfByEdital(
+                                  seletivos[index].id!,
+                                  _textEditingController.text)) {
+                                if (context.mounted) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext builder) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                              'Esse CPF já consta inscrito no Edital selecionado!'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                _textEditingController.text =
+                                                    '';
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                }
+                              } else if (await controller
+                                  .checkCpf(_textEditingController.text)) {
+                                if (context.mounted) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext builder) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                              'Este CPF já consta inscrito em outro Edital!'),
+                                          content: const Text(
+                                              'Deseja se inscrever nesse Edital tambem?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () async {
+                                                await controller
+                                                    .createParticipante(
+                                                        seletivos[index].id!,
+                                                        _textEditingController
+                                                            .text);
+                                                _textEditingController.text =
+                                                    '';
+                                                if (context.mounted) {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          builder) {
+                                                        return AlertDialog(
+                                                          title: const Text(
+                                                              'Inscrição fetita com sucesso'),
+                                                          actions: [
+                                                            TextButton(
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                                Navigator.pop(
+                                                                    context);
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: const Text(
+                                                                  'OK'),
+                                                            )
+                                                          ],
+                                                        );
+                                                      });
+                                                  //confirmar cadastro
+                                                }
+                                              },
+                                              child: const Text('Sim'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                _textEditingController.text =
+                                                    '';
+                                                Navigator.pop(context);
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Não'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                }
+                              } else {
+                                Get.toNamed('/inscricoes', arguments: {
+                                  'idSeletivo': '${seletivos[index].id}',
+                                  'cpf': _textEditingController.text
+                                });
+                                _textEditingController.text = '';
+                              }
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            side: const BorderSide(
+                              width: 2.0,
+                              color: Color.fromARGB(255, 0, 0, 0),
+                            ),
+                            backgroundColor:
+                                const Color.fromARGB(255, 16, 94, 172),
+                          ),
+                          child: const Text('Verificar'),
+                        ),
+                      ],
+                    );
+                  }),
+                );
+              }
+            : null,
         icon: const Icon(Icons.add),
         label: const Text('Inscrever-se'),
         style: ElevatedButton.styleFrom(
@@ -399,5 +412,22 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
         ),
       ),
     );
+  }
+
+  bool checkPeriodoInscricoes(List<ProcessoSeletivo> seletivos, int index) {
+    bool isButtonClickable;
+
+    String dtInicio = seletivos[index].dataInicioInscricoes.toString();
+    String dtFim = seletivos[index].dataFimInscricoes.toString();
+    DateTime dataInicioFormatado =
+        DateFormat('dd/MM/yyyy HH:mm').parse(dtInicio);
+    DateTime dataFimFormatado = DateFormat('dd/MM/yyyy HH:mm').parse(dtFim);
+    if (DateTime.now().isAfter(dataInicioFormatado) &&
+        DateTime.now().isBefore(dataFimFormatado)) {
+      isButtonClickable = true;
+    } else {
+      isButtonClickable = false;
+    }
+    return isButtonClickable;
   }
 }

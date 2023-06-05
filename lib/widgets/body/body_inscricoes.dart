@@ -21,7 +21,7 @@ class BodyInscricoes extends GetView<ParticipanteController> {
             child: const Column(
               children: [
                 Text(
-                  'Edital',
+                  'Cadastro',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 24.0,
@@ -30,7 +30,7 @@ class BodyInscricoes extends GetView<ParticipanteController> {
                   ),
                 ),
                 Text(
-                  'Abaixo estão listados os editais disponíveis',
+                  'Informe Seus Dados Pessoais',
                   style: TextStyle(
                     fontSize: 16.0,
                     color: Colors.grey,
@@ -49,9 +49,6 @@ class BodyInscricoes extends GetView<ParticipanteController> {
   Widget _bodyInscricoes(BuildContext context) {
     controller.cpfController.text = Get.arguments['cpf'];
 
-    //print(Get.arguments['cpf']);
-    //controller.cpfController.text = '661.387.850-29';
-
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
@@ -59,8 +56,8 @@ class BodyInscricoes extends GetView<ParticipanteController> {
             Row(
               children: [
                 Expanded(
-                  child: _textFieldBuild(controller.nomeController, 'Nome',
-                      false, true, false), //requerir campo em todos
+                  child: _textFieldBuild(
+                      controller.nomeController, 'Nome', false, true, false),
                 ),
                 Expanded(
                   child: _textFieldBuild(
@@ -81,8 +78,8 @@ class BodyInscricoes extends GetView<ParticipanteController> {
             Row(
               children: [
                 Expanded(
-                  child: _textFieldBuild(controller.senhaController, 'Senha',
-                      true, true, false), // exibir senha
+                  child: _textFieldBuild(
+                      controller.senhaController, 'Senha', true, true, false),
                 ),
                 Expanded(
                   child: _textFieldBuild(controller.confirmarSenhaController,
@@ -126,7 +123,7 @@ class BodyInscricoes extends GetView<ParticipanteController> {
               ],
             ),
             const Padding(padding: EdgeInsets.only(top: 32.0)),
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: () async {
                 _validaCampos(context);
                 await controller.create(controller
@@ -134,7 +131,18 @@ class BodyInscricoes extends GetView<ParticipanteController> {
                 controller.dispose();
                 Get.toNamed('/');
               },
-              child: const Text('Inscrever-se'),
+              icon: const Icon(
+                Icons.add,
+                size: 35,
+              ),
+              label: const Text('Inscrever-se', style: TextStyle(fontSize: 18)),
+              style: ElevatedButton.styleFrom(
+                side: const BorderSide(
+                  width: 2.0,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+                backgroundColor: const Color.fromARGB(255, 16, 94, 172),
+              ),
             ),
           ],
         ),
@@ -219,33 +227,40 @@ class BodyInscricoes extends GetView<ParticipanteController> {
 
   _validaCampos(BuildContext context) {
     if (controller.nomeController.text.isEmpty) {
-      showAlertDialog(context, 'O campo "Nome" é requerido!');
+      showAlertDialog(
+          context, 'Dados Inválidos', 'O campo "Nome" é requerido!');
     } else if (controller.dataNascimentoController.text.isEmpty) {
-      showAlertDialog(context, 'O campo "Data de Nascimento" é requerido!');
+      showAlertDialog(context, 'Dados Inválidos',
+          'O campo "Data de Nascimento" é requerido!');
     } else if (controller.dataIngressoController.text.isEmpty) {
-      showAlertDialog(context, 'O campo "Data de Inngresso" é requerido!');
+      showAlertDialog(context, 'Dados Inválidos',
+          'O campo "Data de Inngresso" é requerido!');
     } else if (controller.senhaController.text.isEmpty) {
-      showAlertDialog(context, 'O campo "Senha" é requerido!');
+      showAlertDialog(
+          context, 'Dados Inválidos', 'O campo "Senha" é requerido!');
     } else if (controller.confirmarSenhaController.text.isEmpty) {
-      showAlertDialog(context, 'O campo "Confirmação de Senha" é requerido!');
+      showAlertDialog(context, 'Dados Inválidos',
+          'O campo "Confirmação de Senha" é requerido!');
     } else if (!(controller.senhaController.text ==
         controller.confirmarSenhaController.text)) {
-      showAlertDialog(context,
+      showAlertDialog(context, 'Dados Inválidos',
           'Os campos "Senha" e "Confirmação de Senha" não são iguais!');
     } else if (controller.classeSelecionada.string == 'Selecione') {
-      showAlertDialog(context, 'O campo "Classe" é requerido!');
+      showAlertDialog(
+          context, 'Dados Inválidos', 'O campo "Classe" é requerido!');
     } else if (controller.nivelSelecionado.string == 'Selecione') {
-      showAlertDialog(context, 'O campo "Nível" é requerido!');
+      showAlertDialog(
+          context, 'Dados Inválidos', 'O campo "Nível" é requerido!');
     }
   }
 
-  showAlertDialog(BuildContext context, String label) {
+  showAlertDialog(BuildContext context, String title, String subTitle) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Dados Inválidos'),
-          content: Text(label),
+          title: Text(title),
+          content: Text(subTitle),
           actions: [
             TextButton(
               onPressed: () {

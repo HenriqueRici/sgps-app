@@ -23,12 +23,12 @@ class SideBar extends StatelessWidget {
       child: Column(children: [
         _buildButton(context, "Início", Icons.home, '/'),
         _buildButton(context, "Área do Participante", Icons.person,
-            '/'), // '/login-participante'
+            '/login-participante'),
         Expanded(
           child: Align(
             alignment: Alignment.bottomCenter,
             child: _buildButton(context, 'Administrador',
-                Icons.admin_panel_settings, '/'), // '/login-adm'
+                Icons.admin_panel_settings, '/login-adm'),
           ),
         )
       ]),
@@ -44,7 +44,9 @@ class SideBar extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: ElevatedButton.icon(
           onPressed: () {
-            Get.toNamed(path);
+            Get.toNamed(
+              path,
+            );
           },
           icon: Icon(icon),
           label: Text(label),

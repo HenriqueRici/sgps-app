@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import '../models/processo_seletivo.dart';
 import '../providers/processo_seletivo_provider.dart';
 
@@ -16,5 +18,14 @@ class ProcessoSeletivoRepository {
 
   Future<ProcessoSeletivo> fetchProcessoSeletivoById(int id) async {
     return await provider.fetchProcessoSeletivoById(id);
+  }
+
+  Future<Response> createProcessoSeletivo(
+      ProcessoSeletivo processoSeletivo) async {
+    return await provider.createProcessoSeletivo(processoSeletivo);
+  }
+
+  updateProcessoSeletivo(ProcessoSeletivo processoSeletivo) async {
+    return await provider.updateProcessoSeletivo(processoSeletivo);
   }
 }

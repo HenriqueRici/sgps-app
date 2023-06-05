@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:get_storage/get_storage.dart';
 import '../models/processo_seletivo.dart';
 
 const api = 'http://localhost:8080/sgps';
@@ -31,5 +32,27 @@ class ProcessoSeletivoProvider {
     final model = response.data
         .map<ProcessoSeletivo>((data) => ProcessoSeletivo.fromJson(data));
     return model;
+  }
+
+  Future<Response> createProcessoSeletivo(
+      ProcessoSeletivo processoSeletivo) async {
+    GetStorage box = GetStorage();
+    String tokenBox = box.read('token');
+    dio.options.headers["Authorization"] = "Bearer $tokenBox";
+    final response = await dio.post('$api/processo-seletivo',
+        data: processoSeletivo.toJson());
+    return response;
+  }
+
+  Future<Response> updateProcessoSeletivo(
+      ProcessoSeletivo processoSeletivo) async {
+    GetStorage box = GetStorage();
+    String tokenBox = box.read('token');
+    dio.options.headers["Authorization"] = "Bearer $tokenBox";
+    final response = await dio.put(
+        '$api/processo-seletivo/${processoSeletivo.id}',
+        data: processoSeletivo.toJson());
+
+    return response;
   }
 }

@@ -18,4 +18,8 @@ class ParticipanteRepository {
   Future<Response> createParticipanteCadastrado(id, String cpf) async {
     return await provider.createParticipanteCadastrado(id, cpf);
   }
+
+  Future<Participante> fetchParticipante(String cpf) async {
+    return await provider.fetchParticipante(cpf);
+  }
 }

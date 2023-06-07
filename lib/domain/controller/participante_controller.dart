@@ -14,14 +14,14 @@ class ParticipanteController extends GetxController {
   TextEditingController classeController = TextEditingController();
   TextEditingController nivelController = TextEditingController();
 
-  final _participante = ''.obs;
-
   final RxString _selectedClasse = 'Selecione'.obs;
   final RxString _selectedNivel = 'Selecione'.obs;
+
   ParticipanteRepository repository;
 
   ParticipanteController({required this.repository});
 
+  final _participante = ''.obs;
   String get response => _participante.value;
 
   List<Option<String>> get classes => [
@@ -110,5 +110,11 @@ class ParticipanteController extends GetxController {
 
   void setSelectedValueNivel(String selectedValue) {
     _selectedNivel.value = selectedValue;
+  }
+
+  Future<Participante> fetchParticipante(String cpf) async {
+    // corrigir metodo
+    var a = await repository.fetchParticipante(cpf);
+    return a;
   }
 }

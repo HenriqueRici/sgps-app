@@ -329,9 +329,39 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
     TextEditingController edital = TextEditingController();
     TextEditingController anoReferencia = TextEditingController();
     TextEditingController cargo = TextEditingController();
+    TextEditingController caminhopdf = TextEditingController();
+    TextEditingController dtInicioInscricao = TextEditingController();
+    TextEditingController dtFimInscricao = TextEditingController();
+    TextEditingController hsInicioInscricao = TextEditingController();
+    TextEditingController hsFimInscricao = TextEditingController();
+    TextEditingController dtInicioRetificacao = TextEditingController();
+    TextEditingController dtFimRetificacao = TextEditingController();
+    TextEditingController hsInicioRetificacao = TextEditingController();
+    TextEditingController hsFimRetificacao = TextEditingController();
     edital.text = seletivos[index].edital.toString();
     anoReferencia.text = seletivos[index].anoReferencia.toString();
     cargo.text = seletivos[index].cargo.toString();
+    caminhopdf.text = seletivos[index].pathPdf.toString();
+    List<String> inicioInscricao =
+        seletivos[index].dataInicioInscricoes.toString().split(' ');
+    dtInicioInscricao.text = inicioInscricao[0];
+    hsInicioInscricao.text = '${inicioInscricao[1]}:00';
+
+    List<String> fimInscricao =
+        seletivos[index].dataFimInscricoes.toString().split(' ');
+    dtFimInscricao.text = fimInscricao[0];
+    hsFimInscricao.text = '${fimInscricao[1]}:00';
+
+    List<String> inicioRetificacao =
+        seletivos[index].dataInicioInscricoes.toString().split(' ');
+    dtInicioRetificacao.text = inicioRetificacao[0];
+    hsInicioRetificacao.text = '${inicioRetificacao[1]}:00';
+
+    List<String> fimRetificacao =
+        seletivos[index].dataFimRetificacao.toString().split(' ');
+    dtFimRetificacao.text = fimRetificacao[0];
+    hsFimRetificacao.text = '${fimRetificacao[1]}:00';
+
     return showDialog(
         context: context,
         builder: (context) {
@@ -361,19 +391,19 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                   Row(
                     children: [
                       Expanded(
-                        child: _textFieldBuild(controller.pathPdf,
-                            'Caminho PDF Edital', false, true, false, false),
+                        child: _textFieldBuild(caminhopdf, 'Caminho PDF Edital',
+                            false, true, false, false),
                       ),
                     ],
                   ),
                   Row(
                     children: [
                       Expanded(
-                        child: _textFieldBuild(controller.dataInicioInscricoes,
+                        child: _textFieldBuild(dtInicioInscricao,
                             'Data Inicio Inscrições', false, true, true, false),
                       ),
                       Expanded(
-                        child: _textFieldBuild(controller.hsInicioInscricoes,
+                        child: _textFieldBuild(hsInicioInscricao,
                             'Hora Inicio Inscrições', false, true, false, true),
                       ),
                     ],
@@ -381,11 +411,11 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                   Row(
                     children: [
                       Expanded(
-                        child: _textFieldBuild(controller.dataFimInscricoes,
+                        child: _textFieldBuild(dtFimInscricao,
                             'Data Fim Inscrições', false, true, true, false),
                       ),
                       Expanded(
-                        child: _textFieldBuild(controller.hsFimInscricoes,
+                        child: _textFieldBuild(hsFimInscricao,
                             'Hora Fim Inscrições', false, true, false, true),
                       ),
                     ],
@@ -394,7 +424,7 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                     children: [
                       Expanded(
                         child: _textFieldBuild(
-                            controller.dataInicioRetificacao,
+                            dtInicioRetificacao,
                             'Data Inicio Retificações',
                             false,
                             true,
@@ -403,7 +433,7 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                       ),
                       Expanded(
                         child: _textFieldBuild(
-                            controller.hsInicioRetificacao,
+                            hsInicioRetificacao,
                             'Hora Inicio Retificações',
                             false,
                             true,
@@ -415,11 +445,11 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                   Row(
                     children: [
                       Expanded(
-                        child: _textFieldBuild(controller.dataFimRetificacao,
+                        child: _textFieldBuild(dtFimRetificacao,
                             'Data Fim Retificações', false, true, true, false),
                       ),
                       Expanded(
-                        child: _textFieldBuild(controller.hsFimRetificacao,
+                        child: _textFieldBuild(hsFimRetificacao,
                             'Hora Fim Retificações', false, true, false, true),
                       ),
                     ],
@@ -432,22 +462,25 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                           id: seletivos[index].id,
                           edital: edital.text,
                           anoReferencia: int.parse(anoReferencia.text),
+                          pathPdf: caminhopdf.text,
                           cargo: cargo.text,
-                          pathPdf: controller.pathPdf.text,
                           dataInicioInscricoes:
-                              '${controller.dataInicioInscricoes.text} ${controller.hsInicioInscricoes.text}',
-                          dataFimInscricoes: controller.dataFimInscricoes.text,
+                              '${dtInicioInscricao.text} ${hsInicioInscricao.text}',
+                          dataFimInscricoes:
+                              '${dtFimInscricao.text} ${hsFimInscricao.text}',
                           dataInicioRetificacao:
-                              controller.dataInicioRetificacao.text,
+                              '${dtInicioRetificacao.text} ${hsInicioRetificacao.text}',
                           dataFimRetificacao:
-                              controller.dataFimRetificacao.text,
+                              '${dtFimRetificacao.text} ${hsFimRetificacao.text}',
                         );
 
                         controller.refificar(seletivoRetificado);
+                        Navigator.pop(context);
                         showAlertDialog(
                             context,
                             'Edital ${controller.editalController.text} Retificado com Sucesso!',
                             'Aperte "OK"');
+                        controller.disposeDados();
                       },
                       icon: const Icon(
                         Icons.edit_outlined,

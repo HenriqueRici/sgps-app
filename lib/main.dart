@@ -8,6 +8,7 @@ import 'package:sgps/widgets/body/body_inscricoes.dart';
 import 'package:sgps/widgets/body/body_login_adm.dart';
 import 'package:sgps/widgets/body/body_login_paticipante.dart';
 import 'package:sgps/widgets/body/body_gerencia_seletivo.dart';
+import 'package:sgps/widgets/body_area_participante.dart';
 import 'widgets/body/body_home.dart';
 
 void main() async {
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
         ),
         GetPage(
           name: '/login-participante',
-          page: (() => BaseLayout(
+          page: (() => const BaseLayout(
                 child: BodyLoginParticipante(),
               )),
         ),
@@ -59,6 +60,10 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: "/adm-seletivos",
           page: () => const BaseLayout(child: BodySeletivo()),
+        ),
+        GetPage(
+          name: "/area-participante",
+          page: () => const BaseLayout(child: BodyParticipante()),
         )
       ],
     );

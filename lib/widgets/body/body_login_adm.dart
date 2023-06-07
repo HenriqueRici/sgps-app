@@ -9,6 +9,7 @@ class BodyLoginAdm extends GetView<LoginController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.onInit();
     return SizedBox(
         child: Center(
       child: Container(
@@ -21,8 +22,7 @@ class BodyLoginAdm extends GetView<LoginController> {
               color: Colors.grey.withOpacity(0.5),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: const Offset(
-                  0, 3), // deslocamento horizontal e vertical da sombra
+              offset: const Offset(0, 3),
             ),
           ],
         ),

@@ -1,6 +1,6 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
+import 'package:get_storage/get_storage.dart';
 import '../models/participante.dart';
 
 const api = 'http://localhost:8080/sgps';
@@ -34,5 +34,17 @@ class ParticipanteProvider {
     data['cpf'] = cpf;
     data['idProcessoSeletivo'] = id;
     return data;
+  }
+
+  Future<Participante> fetchParticipante(String cpf) async {
+    GetStorage box = GetStorage();
+    String tokenBox = box.read('token');
+    dio.options.headers["Authorization"] = "Bearer $tokenBox";
+
+    final response = await dio.get('$api/participantes/cpf/$cpf');
+
+    final Participante model = Participante.fromJson(response.data);
+
+    return model;
   }
 }

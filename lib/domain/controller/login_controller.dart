@@ -33,6 +33,7 @@ class LoginController extends GetxController {
       var data = json.encode(params);
 
       var response = await dio.post('$api/usuarios/login', data: data);
+      // print(response);
       Map<String, dynamic> token = jsonDecode(response.toString());
       var usuarioToken = token["token"];
 

@@ -48,7 +48,6 @@ class BodyInscricoes extends GetView<ParticipanteController> {
 
   Widget _bodyInscricoes(BuildContext context) {
     controller.cpfController.text = Get.arguments['cpf'];
-
     return Expanded(
       child: SingleChildScrollView(
         child: Column(

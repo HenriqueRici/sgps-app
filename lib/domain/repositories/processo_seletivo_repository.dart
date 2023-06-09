@@ -25,7 +25,8 @@ class ProcessoSeletivoRepository {
     return await provider.createProcessoSeletivo(processoSeletivo);
   }
 
-  updateProcessoSeletivo(ProcessoSeletivo processoSeletivo) async {
+  Future<Response> updateProcessoSeletivo(
+      ProcessoSeletivo processoSeletivo) async {
     return await provider.updateProcessoSeletivo(processoSeletivo);
   }
 }

@@ -11,8 +11,8 @@ class ParticipanteController extends GetxController {
   TextEditingController dataIngressoController = TextEditingController();
   TextEditingController senhaController = TextEditingController();
   TextEditingController confirmarSenhaController = TextEditingController();
-  TextEditingController classeController = TextEditingController();
-  TextEditingController nivelController = TextEditingController();
+  // TextEditingController classeController = TextEditingController();
+  // TextEditingController nivelController = TextEditingController();
 
   final RxString _selectedClasse = 'Selecione'.obs;
   final RxString _selectedNivel = 'Selecione'.obs;
@@ -61,8 +61,8 @@ class ParticipanteController extends GetxController {
     dataIngressoController = TextEditingController();
     senhaController = TextEditingController();
     confirmarSenhaController = TextEditingController();
-    classeController = TextEditingController();
-    nivelController = TextEditingController();
+    // classeController = TextEditingController();
+    //nivelController = TextEditingController();
     super.onInit();
   }
 
@@ -74,8 +74,10 @@ class ParticipanteController extends GetxController {
     dataIngressoController = TextEditingController();
     senhaController = TextEditingController();
     confirmarSenhaController = TextEditingController();
-    classeController = TextEditingController();
-    nivelController = TextEditingController();
+    // classeController = TextEditingController();
+    //nivelController = TextEditingController();
+    setSelectedValueClasse('Selecione');
+    setSelectedValueNivel('Selecione');
     super.dispose();
   }
 

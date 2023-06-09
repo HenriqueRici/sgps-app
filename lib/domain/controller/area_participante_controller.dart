@@ -14,8 +14,8 @@ class AreaParticipanteController extends GetxController {
   TextEditingController classeController = TextEditingController();
   TextEditingController nivelController = TextEditingController();
 
-  final RxString _selectedClasse = 'Selecione'.obs;
-  final RxString _selectedNivel = 'Selecione'.obs;
+  final RxString selectedClasse = 'Selecione'.obs;
+  final RxString selectedNivel = 'Selecione'.obs;
 
   ParticipanteRepository repository;
 
@@ -27,8 +27,10 @@ class AreaParticipanteController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    //await fetchParticipante(Get.arguments['login']);
-    await fetchParticipante('953.197.920-00');
+    await fetchParticipante(Get.arguments['login']);
+    classeSelecionada.value = 'Selecione';
+    nivelSelecionado.value = 'Selecione';
+    //await fetchParticipante('912.363.110-43');
     super.onInit();
   }
 
@@ -62,15 +64,24 @@ class AreaParticipanteController extends GetxController {
         Option('12', 'N012'),
       ];
 
-  RxString get classeSelecionada => _selectedClasse;
+  String converteNivel(String nivel) {
+    var obj = niveis.firstWhere((element) => element.label == nivel);
+    return obj.value.toString();
+  }
 
-  RxString get nivelSelecionado => _selectedNivel;
+  RxString get classeSelecionada => selectedClasse;
+
+  RxString get nivelSelecionado => selectedNivel;
 
   void setSelectedValueClasse(String selectedValue) {
-    _selectedClasse.value = selectedValue;
+    selectedClasse.value = selectedValue;
   }
 
   void setSelectedValueNivel(String selectedValue) {
-    _selectedNivel.value = selectedValue;
+    selectedNivel.value = selectedValue;
+  }
+
+  Future<void> updateParticipante(Participante participante) async {
+    await repository.updateParticipante(participante);
   }
 }

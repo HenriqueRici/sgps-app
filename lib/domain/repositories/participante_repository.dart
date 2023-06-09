@@ -22,4 +22,8 @@ class ParticipanteRepository {
   Future<Participante> fetchParticipante(String cpf) async {
     return await provider.fetchParticipante(cpf);
   }
+
+  Future<Response> updateParticipante(Participante participante) async {
+    return await provider.updateParticipante(participante);
+  }
 }

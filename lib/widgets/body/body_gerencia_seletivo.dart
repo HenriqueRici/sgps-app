@@ -363,144 +363,135 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
     hsFimRetificacao.text = '${fimRetificacao[1]}:00';
 
     return showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.60,
-              height: MediaQuery.of(context).size.height * 0.70,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _textFieldBuild(
-                            edital, 'Edital', false, false, false, false),
-                      ),
-                      Expanded(
-                        child: _textFieldBuild(anoReferencia, 'Ano Referência',
-                            false, false, false, false),
-                      ),
-                      Expanded(
-                        child: _textFieldBuild(
-                            cargo, 'Cargo', false, false, false, false),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _textFieldBuild(caminhopdf, 'Caminho PDF Edital',
-                            false, true, false, false),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _textFieldBuild(dtInicioInscricao,
-                            'Data Inicio Inscrições', false, true, true, false),
-                      ),
-                      Expanded(
-                        child: _textFieldBuild(hsInicioInscricao,
-                            'Hora Inicio Inscrições', false, true, false, true),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _textFieldBuild(dtFimInscricao,
-                            'Data Fim Inscrições', false, true, true, false),
-                      ),
-                      Expanded(
-                        child: _textFieldBuild(hsFimInscricao,
-                            'Hora Fim Inscrições', false, true, false, true),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _textFieldBuild(
-                            dtInicioRetificacao,
-                            'Data Inicio Retificações',
-                            false,
-                            true,
-                            true,
-                            false),
-                      ),
-                      Expanded(
-                        child: _textFieldBuild(
-                            hsInicioRetificacao,
-                            'Hora Inicio Retificações',
-                            false,
-                            true,
-                            false,
-                            true),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _textFieldBuild(dtFimRetificacao,
-                            'Data Fim Retificações', false, true, true, false),
-                      ),
-                      Expanded(
-                        child: _textFieldBuild(hsFimRetificacao,
-                            'Hora Fim Retificações', false, true, false, true),
-                      ),
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: ElevatedButton.icon(
-                      onPressed: () async {
-                        var seletivoRetificado = ProcessoSeletivo(
-                          id: seletivos[index].id,
-                          edital: edital.text,
-                          anoReferencia: int.parse(anoReferencia.text),
-                          pathPdf: caminhopdf.text,
-                          cargo: cargo.text,
-                          dataInicioInscricoes:
-                              '${dtInicioInscricao.text} ${hsInicioInscricao.text}',
-                          dataFimInscricoes:
-                              '${dtFimInscricao.text} ${hsFimInscricao.text}',
-                          dataInicioRetificacao:
-                              '${dtInicioRetificacao.text} ${hsInicioRetificacao.text}',
-                          dataFimRetificacao:
-                              '${dtFimRetificacao.text} ${hsFimRetificacao.text}',
-                        );
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.60,
+            height: MediaQuery.of(context).size.height * 0.70,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: _textFieldBuild(
+                          edital, 'Edital', false, false, false, false),
+                    ),
+                    Expanded(
+                      child: _textFieldBuild(anoReferencia, 'Ano Referência',
+                          false, false, false, false),
+                    ),
+                    Expanded(
+                      child: _textFieldBuild(
+                          cargo, 'Cargo', false, false, false, false),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _textFieldBuild(caminhopdf, 'Caminho PDF Edital',
+                          false, true, false, false),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _textFieldBuild(dtInicioInscricao,
+                          'Data Inicio Inscrições', false, true, true, false),
+                    ),
+                    Expanded(
+                      child: _textFieldBuild(hsInicioInscricao,
+                          'Hora Inicio Inscrições', false, true, false, true),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _textFieldBuild(dtFimInscricao,
+                          'Data Fim Inscrições', false, true, true, false),
+                    ),
+                    Expanded(
+                      child: _textFieldBuild(hsFimInscricao,
+                          'Hora Fim Inscrições', false, true, false, true),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _textFieldBuild(dtInicioRetificacao,
+                          'Data Inicio Retificações', false, true, true, false),
+                    ),
+                    Expanded(
+                      child: _textFieldBuild(hsInicioRetificacao,
+                          'Hora Inicio Retificações', false, true, false, true),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _textFieldBuild(dtFimRetificacao,
+                          'Data Fim Retificações', false, true, true, false),
+                    ),
+                    Expanded(
+                      child: _textFieldBuild(hsFimRetificacao,
+                          'Hora Fim Retificações', false, true, false, true),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      var seletivoRetificado = ProcessoSeletivo(
+                        id: seletivos[index].id,
+                        edital: edital.text,
+                        anoReferencia: int.parse(anoReferencia.text),
+                        pathPdf: caminhopdf.text,
+                        cargo: cargo.text,
+                        dataInicioInscricoes:
+                            '${dtInicioInscricao.text} ${hsInicioInscricao.text}',
+                        dataFimInscricoes:
+                            '${dtFimInscricao.text} ${hsFimInscricao.text}',
+                        dataInicioRetificacao:
+                            '${dtInicioRetificacao.text} ${hsInicioRetificacao.text}',
+                        dataFimRetificacao:
+                            '${dtFimRetificacao.text} ${hsFimRetificacao.text}',
+                      );
 
-                        controller.refificar(seletivoRetificado);
-                        Navigator.pop(context);
-                        showAlertDialog(
-                            context,
-                            'Edital ${controller.editalController.text} Retificado com Sucesso!',
-                            'Aperte "OK"');
-                        controller.disposeDados();
-                      },
-                      icon: const Icon(
-                        Icons.edit_outlined,
-                        size: 35,
+                      controller.refificar(seletivoRetificado);
+                      Navigator.pop(context);
+                      showAlertDialog(
+                          context,
+                          'Edital ${controller.editalController.text} Retificado com Sucesso!',
+                          'Aperte "OK"');
+                      controller.disposeDados();
+                    },
+                    icon: const Icon(
+                      Icons.edit_outlined,
+                      size: 35,
+                    ),
+                    label:
+                        const Text('Retificar', style: TextStyle(fontSize: 18)),
+                    style: ElevatedButton.styleFrom(
+                      side: const BorderSide(
+                        width: 2.0,
+                        color: Color.fromARGB(255, 0, 0, 0),
                       ),
-                      label: const Text('Retificar',
-                          style: TextStyle(fontSize: 18)),
-                      style: ElevatedButton.styleFrom(
-                        side: const BorderSide(
-                          width: 2.0,
-                          color: Color.fromARGB(255, 0, 0, 0),
-                        ),
-                        backgroundColor: const Color.fromARGB(255, 212, 90, 8),
-                      ),
+                      backgroundColor: const Color.fromARGB(255, 212, 90, 8),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

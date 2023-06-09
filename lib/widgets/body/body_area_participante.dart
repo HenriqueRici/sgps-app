@@ -103,24 +103,6 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
                     ),
                   ),
                 ),
-                ElevatedButton.icon(
-                  onPressed: () async {
-                    // await _retificarEdital(context, index, seletivos);
-                  },
-                  icon: const Icon(
-                    Icons.edit_outlined,
-                    size: 35,
-                  ),
-                  label:
-                      const Text('Retificar', style: TextStyle(fontSize: 18)),
-                  style: ElevatedButton.styleFrom(
-                    side: const BorderSide(
-                      width: 2.0,
-                      color: Color.fromARGB(255, 0, 0, 0),
-                    ),
-                    backgroundColor: Color.fromARGB(255, 224, 5, 5),
-                  ),
-                ),
               ],
             ),
           ],
@@ -130,131 +112,249 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
   }
 
   Widget _bodyDadosParticipante(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width * 0.5;
-    const itemWidth = 300.0;
-    final crossAxisCount = (screenWidth / itemWidth).floor();
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        mainAxisSpacing: 1,
-        crossAxisSpacing: 1,
-        childAspectRatio: 1,
-        mainAxisExtent: 360,
+    return Center(
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _data('Nome:', controller.participante$.value.nome!, 'CPF:',
+                  controller.participante$.value.cpf!),
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _data(
+                  'Data Nascimento:',
+                  controller.participante$.value.dataNascimento!,
+                  'Classe:',
+                  controller.participante$.value.classe!),
+            ],
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _data(
+                  'Data Ingresso:',
+                  controller.participante$.value.dataIngresso!,
+                  'Nível:',
+                  controller.participante$.value.nivel!),
+            ],
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          ElevatedButton.icon(
+            onPressed: () async {
+              await _retificarDados(context, controller.participante$.value);
+            },
+            icon: const Icon(
+              Icons.edit_outlined,
+              size: 35,
+            ),
+            label: const Text('Alterar Dados', style: TextStyle(fontSize: 18)),
+            style: ElevatedButton.styleFrom(
+              side: const BorderSide(
+                width: 2.0,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+              backgroundColor: const Color.fromARGB(255, 224, 5, 5),
+            ),
+          ),
+        ],
       ),
-      shrinkWrap: true,
-      itemCount: 1,
-      itemBuilder: (context, index) {
-        return _cardDados(context);
+    );
+  }
+
+  _retificarDados(BuildContext context, Participante participante) {
+    TextEditingController nome = TextEditingController();
+    TextEditingController cpf = TextEditingController();
+    TextEditingController dtNascimento = TextEditingController();
+    TextEditingController dtIngresso = TextEditingController();
+    TextEditingController classe = TextEditingController();
+    TextEditingController nivel = TextEditingController();
+
+    nome.text = participante.nome.toString();
+    cpf.text = participante.cpf.toString();
+    dtNascimento.text = participante.dataNascimento.toString();
+    dtIngresso.text = participante.dataIngresso.toString();
+    classe.text = participante.classe.toString();
+    nivel.text = participante.nivel.toString();
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.60,
+            height: MediaQuery.of(context).size.height * 0.35,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: _textFieldBuild(nome, 'Nome', false, false, true),
+                    ),
+                    Expanded(
+                      child: _textFieldBuild(cpf, 'CPF', false, false, false),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _textFieldBuild(
+                          dtNascimento, 'Data Nascimento', false, true, true),
+                    ),
+                    Expanded(
+                      child: _textFieldBuild(
+                          dtIngresso, 'Data Ingresso', false, true, true),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    _dropdownButtonClasse(),
+                    _dropdownButtonNivel(),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      var update = Participante(
+                        id: controller.participante$.value.id,
+                        nome: nome.text,
+                        dataNascimento: dtNascimento.text,
+                        dataIngresso: dtIngresso.text,
+                      );
+
+                      if (controller.classeSelecionada == 'Selecione') {
+                        update.classe = controller.participante$.value.classe;
+                      } else {
+                        update.classe = controller.classeSelecionada.string;
+                      }
+
+                      if (controller.nivelSelecionado == 'Selecione') {
+                        print('Entrou 1');
+                        print(controller.participante$.value.nivel);
+
+                        update.nivel = controller.converteNivel(
+                            controller.participante$.value.nivel!);
+                      } else {
+                        print('Entrou 2');
+                        print(controller.nivelSelecionado.string);
+                        update.nivel = controller.nivelSelecionado.string;
+                      }
+
+                      print(update.nivel);
+
+                      controller.updateParticipante(update);
+                      Navigator.pop(context);
+                      _showAlertDialog(context,
+                          'Participante Alterado com Sucesso!', 'Aperte "OK"');
+                    },
+                    icon: const Icon(
+                      Icons.edit_outlined,
+                      size: 35,
+                    ),
+                    label:
+                        const Text('Alterar', style: TextStyle(fontSize: 18)),
+                    style: ElevatedButton.styleFrom(
+                      side: const BorderSide(
+                        width: 2.0,
+                        color: Color.fromARGB(255, 0, 0, 0),
+                      ),
+                      backgroundColor: const Color.fromARGB(255, 224, 5, 5),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
       },
     );
   }
 
-  Widget _cardDados(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(16.0),
-      elevation: 8,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            ListTile(
-              leading: const Text(
-                'Nome:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              trailing: Text(
-                '${controller.participante$.value.nome}',
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
+  _data(String label1, String atributo1, String label2, String atributo2) {
+    return Padding(
+      padding: const EdgeInsets.only(
+          right: 36.0, left: 36.0, top: 16.0, bottom: 8.0),
+      child: SizedBox(
+        width: 500,
+        child: Row(children: [
+          Text(
+            label1,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.black,
+              decoration: TextDecoration.none,
             ),
-            ListTile(
-              leading: const Text(
-                'CPF:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              trailing: Text(
-                '${controller.participante$.value.cpf}',
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
+          ),
+          const Padding(padding: EdgeInsets.only(right: 36.0)),
+          Text(
+            atributo1,
+            style: const TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+              color: Colors.black,
+              decoration: TextDecoration.none,
             ),
-            ListTile(
-              leading: const Text(
-                'Data Nascimento:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              trailing: Text(
-                '${controller.participante$.value.dataNascimento}',
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
+          ),
+          const Padding(padding: EdgeInsets.only(right: 48.0)),
+          Text(
+            label2,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+              color: Colors.black,
+              decoration: TextDecoration.none,
             ),
-            ListTile(
-              leading: const Text(
-                'Data Ingresso:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              trailing: Text(
-                '${controller.participante$.value.dataIngresso}',
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
+          ),
+          const Padding(padding: EdgeInsets.only(right: 36.0)),
+          Text(
+            atributo2,
+            style: const TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: 16,
+              color: Colors.black,
+              decoration: TextDecoration.none,
             ),
-            ListTile(
-              leading: const Text(
-                'Classe:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              trailing: Text(
-                '${controller.participante$.value.classe}',
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: const Text(
-                'Nível:',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-              trailing: Text(
-                '${controller.participante$.value.nivel}',
-                style: const TextStyle(
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ]),
       ),
     );
   }
 
+  _showAlertDialog(BuildContext context, String title, String subTitle) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(subTitle),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   Widget _textFieldBuild(TextEditingController controllerField, String label,
-      bool senha, bool data) {
+      bool senha, bool data, bool editavel) {
     MaskTextInputFormatter dateFormatter =
         MaskTextInputFormatter(mask: '##/##/####');
     return Material(
@@ -264,7 +364,7 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
         child: TextField(
           controller: controllerField,
           inputFormatters: data ? [dateFormatter] : null,
-          enabled: true, //colocar flag
+          enabled: editavel,
           obscureText: senha,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
@@ -283,7 +383,7 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
         child: Material(
           child: Obx(() {
             return DropdownButtonFormField<String>(
-                value: controller.classeSelecionada.string,
+                value: controller.participante$.value.classe,
                 items: controller.classes.map((Option<String> e) {
                   return DropdownMenuItem<String>(
                     value: e.value,
@@ -291,9 +391,7 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
                   );
                 }).toList(),
                 onChanged: (selectedValue) {
-                  if (selectedValue != 'Selecione') {
-                    controller.setSelectedValueClasse(selectedValue ?? '');
-                  }
+                  controller.setSelectedValueClasse(selectedValue!);
                 });
           }),
         ),
@@ -309,7 +407,8 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
         child: Material(
           child: Obx(() {
             return DropdownButtonFormField<String>(
-                value: controller.nivelSelecionado.string,
+                value: controller
+                    .converteNivel(controller.participante$.value.nivel!),
                 items: controller.niveis.map((Option<String> e) {
                   return DropdownMenuItem<String>(
                     value: e.value,
@@ -317,9 +416,7 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
                   );
                 }).toList(),
                 onChanged: (selectedValue) {
-                  if (selectedValue != 'Selecione') {
-                    controller.setSelectedValueNivel(selectedValue ?? '');
-                  }
+                  controller.setSelectedValueNivel(selectedValue!);
                 });
           }),
         ),

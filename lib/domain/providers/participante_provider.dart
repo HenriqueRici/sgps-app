@@ -47,4 +47,13 @@ class ParticipanteProvider {
 
     return model;
   }
+
+  Future<Response> updateParticipante(Participante participante) async {
+    GetStorage box = GetStorage();
+    String tokenBox = box.read('token');
+    dio.options.headers["Authorization"] = "Bearer $tokenBox";
+    final response = await dio.put('$api/participantes/${participante.id}',
+        data: participante.toJson());
+    return response;
+  }
 }

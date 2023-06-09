@@ -203,6 +203,7 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                     context,
                     'Edital ${controller.editalController.text} Criado com Sucesso!',
                     'Aperte "OK"');
+                controller.fetchProcessosSeletivo();
               }
               controller.onInit();
             },
@@ -465,12 +466,13 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                       );
 
                       controller.refificar(seletivoRetificado);
+
                       Navigator.pop(context);
                       showAlertDialog(
                           context,
                           'Edital ${controller.editalController.text} Retificado com Sucesso!',
                           'Aperte "OK"');
-                      controller.disposeDados();
+                      controller.fetchProcessosSeletivo();
                     },
                     icon: const Icon(
                       Icons.edit_outlined,

@@ -21,7 +21,8 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
                     _cabecalho(context, 'Acompanhamento de Inscrições'),
                     _seletivosInscrito(context, controller.participante$.value),
                     _cabecalho(context, 'Dados Pessoais'),
-                    _bodyDadosParticipante(context),
+                    //_bodyDadosParticipante(context)
+                    _bodyDadosParticipante2(context)
                   ],
                 ),
     );
@@ -127,11 +128,13 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _data(
-                  'Data Nascimento:',
-                  controller.participante$.value.dataNascimento!,
-                  'Classe:',
-                  controller.participante$.value.classe!),
+              Obx(
+                () => _data(
+                    'Data Nascimento:',
+                    controller.participante$.value.dataNascimento!,
+                    'Classe:',
+                    controller.participante$.value.classe!),
+              )
             ],
           ),
           Row(
@@ -234,30 +237,32 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
                         dataIngresso: dtIngresso.text,
                       );
 
-                      if (controller.classeSelecionada == 'Selecione') {
+                      if (controller.classeSelecionada.toString() ==
+                          'Selecione') {
                         update.classe = controller.participante$.value.classe;
                       } else {
                         update.classe = controller.classeSelecionada.string;
                       }
 
-                      if (controller.nivelSelecionado == 'Selecione') {
-                        print('Entrou 1');
-                        print(controller.participante$.value.nivel);
-
+                      if (controller.nivelSelecionado.toString() ==
+                          'Selecione') {
                         update.nivel = controller.converteNivel(
                             controller.participante$.value.nivel!);
                       } else {
-                        print('Entrou 2');
-                        print(controller.nivelSelecionado.string);
                         update.nivel = controller.nivelSelecionado.string;
                       }
 
-                      print(update.nivel);
+                      await controller.updateParticipante(update);
 
-                      controller.updateParticipante(update);
-                      Navigator.pop(context);
-                      _showAlertDialog(context,
-                          'Participante Alterado com Sucesso!', 'Aperte "OK"');
+                      await controller.fetchParticipante(
+                          controller.participante$.value.cpf!);
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                        _showAlertDialog(
+                            context,
+                            'Participante Alterado com Sucesso!',
+                            'Aperte "OK"');
+                      }
                     },
                     icon: const Icon(
                       Icons.edit_outlined,
@@ -284,11 +289,9 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
 
   _data(String label1, String atributo1, String label2, String atributo2) {
     return Padding(
-      padding: const EdgeInsets.only(
-          right: 36.0, left: 36.0, top: 16.0, bottom: 8.0),
-      child: SizedBox(
-        width: 500,
-        child: Row(children: [
+      padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
+      child: Row(
+        children: [
           Text(
             label1,
             style: const TextStyle(
@@ -298,7 +301,7 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
               decoration: TextDecoration.none,
             ),
           ),
-          const Padding(padding: EdgeInsets.only(right: 36.0)),
+          const Padding(padding: EdgeInsets.only(right: 8.0, left: 8.0)),
           Text(
             atributo1,
             style: const TextStyle(
@@ -308,7 +311,7 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
               decoration: TextDecoration.none,
             ),
           ),
-          const Padding(padding: EdgeInsets.only(right: 48.0)),
+          const Padding(padding: EdgeInsets.only(right: 48.0, left: 48.0)),
           Text(
             label2,
             style: const TextStyle(
@@ -318,7 +321,7 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
               decoration: TextDecoration.none,
             ),
           ),
-          const Padding(padding: EdgeInsets.only(right: 36.0)),
+          const Padding(padding: EdgeInsets.only(right: 8.0, left: 8.0)),
           Text(
             atributo2,
             style: const TextStyle(
@@ -328,7 +331,7 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
               decoration: TextDecoration.none,
             ),
           ),
-        ]),
+        ],
       ),
     );
   }
@@ -421,6 +424,52 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
           }),
         ),
       ),
+    );
+  }
+
+  _bodyDadosParticipante2(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Column(
+          children: [
+            const SizedBox(
+              height: 50.0,
+            ),
+            Obx(() => _data('Nome:', controller.participante$.value.nome!,
+                'CPF:', controller.participante$.value.cpf!)),
+            Obx(() => _data(
+                'Data Nascimento:',
+                controller.participante$.value.dataNascimento!,
+                'Data Ingresso:',
+                controller.participante$.value.dataIngresso!)),
+            Obx(() => _data('Classe:', controller.participante$.value.classe!,
+                'Nível:', controller.participante$.value.nivel!)),
+            const SizedBox(
+              height: 75.0,
+            ),
+            ElevatedButton.icon(
+              onPressed: () async {
+                await _retificarDados(context, controller.participante$.value);
+              },
+              icon: const Icon(
+                Icons.edit_outlined,
+                size: 35,
+              ),
+              label:
+                  const Text('Alterar Dados', style: TextStyle(fontSize: 18)),
+              style: ElevatedButton.styleFrom(
+                side: const BorderSide(
+                  width: 2.0,
+                  color: Color.fromARGB(255, 0, 0, 0),
+                ),
+                backgroundColor: const Color.fromARGB(255, 224, 5, 5),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:sgps/domain/models/participante.dart';
 import 'package:sgps/domain/option.dart';
 import 'package:sgps/domain/repositories/participante_repository.dart';
@@ -27,11 +29,17 @@ class AreaParticipanteController extends GetxController {
 
   @override
   Future<void> onInit() async {
-    await fetchParticipante(Get.arguments['login']);
+    await fetchParticipante(verificaArgumento());
     classeSelecionada.value = 'Selecione';
     nivelSelecionado.value = 'Selecione';
-    //await fetchParticipante('912.363.110-43');
     super.onInit();
+  }
+
+  String verificaArgumento() {
+    String token = GetStorage().read<String>('token').toString();
+    Map<String, dynamic> tokenDecodificado = JwtDecoder.decode(token);
+    String cpf = tokenDecodificado["sub"];
+    return Get.arguments == null ? cpf : Get.arguments['login'];
   }
 
   Future<void> fetchParticipante(String cpf) async {

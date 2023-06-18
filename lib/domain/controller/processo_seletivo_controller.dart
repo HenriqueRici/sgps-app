@@ -101,4 +101,12 @@ class ProcessoSeletivoController extends GetxController {
       dataFimRetificacao: '${dataFimRetificacao.text} ${hsFimRetificacao.text}',
     );
   }
+
+  Future<void> fetchResultadoProcessosSeletivoById(int id) async {
+    await repository.fetchResultadoProcessosSeletivoById(id);
+  }
+
+  Future<void> gerarResultadoProcessosSeletivoById(int id) async {
+    await repository.gerarResultadoProcessosSeletivoById(id);
+  }
 }

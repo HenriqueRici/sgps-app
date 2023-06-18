@@ -29,4 +29,12 @@ class ProcessoSeletivoRepository {
       ProcessoSeletivo processoSeletivo) async {
     return await provider.updateProcessoSeletivo(processoSeletivo);
   }
+
+  Future<Response> fetchResultadoProcessosSeletivoById(int id) async {
+    return await provider.fetchResultadoProcessosSeletivoById(id);
+  }
+
+  Future<Response> gerarResultadoProcessosSeletivoById(int id) async {
+    return await provider.gerarResultadoProcessosSeletivoById(id);
+  }
 }

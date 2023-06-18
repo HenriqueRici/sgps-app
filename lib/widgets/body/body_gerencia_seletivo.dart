@@ -17,7 +17,7 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
             _cabecalho(context, 'Criar um novo Edital'),
             _criarNovoSeletivo(context),
             _cabecalho(context, 'Editais Publicados'),
-            Obx(() => _seletivosPublicados(context))
+            Obx(() => _seletivosPublicados(context)),
           ],
         ),
       ],
@@ -53,7 +53,7 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
           mainAxisSpacing: 1,
           crossAxisSpacing: 1,
           childAspectRatio: 1,
-          mainAxisExtent: 200,
+          mainAxisExtent: 300,
         ),
         shrinkWrap: true,
         itemCount: controller.seletivos$.toList().length,
@@ -116,6 +116,28 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                       color: Color.fromARGB(255, 0, 0, 0),
                     ),
                     backgroundColor: const Color.fromARGB(255, 212, 90, 8),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    controller.gerarResultadoProcessosSeletivoById(
+                        seletivos[index].id!);
+                  },
+                  icon: const Icon(
+                    Icons.check,
+                    size: 35,
+                  ),
+                  label: const Text('Gerar Resultado',
+                      style: TextStyle(fontSize: 18)),
+                  style: ElevatedButton.styleFrom(
+                    side: const BorderSide(
+                      width: 2.0,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                    backgroundColor: const Color.fromARGB(255, 7, 116, 22),
                   ),
                 ),
               ],

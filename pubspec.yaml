@@ -28,6 +28,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  convert: ^3.0.0
+  flutter_pdfview: ^1.0.0
+  flutter_cache_manager: ^3.0.0
+  path_provider: ^2.0.15
+  pdf: ^3.10.4
   flutter_calendar_carousel: ^2.4.2
   jwt_decoder: ^2.0.1
   intl: ^0.18.1

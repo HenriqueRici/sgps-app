@@ -79,7 +79,7 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
           mainAxisSpacing: 1,
           crossAxisSpacing: 1,
           childAspectRatio: 1,
-          mainAxisExtent: 480,
+          mainAxisExtent: 520,
         ),
         shrinkWrap: true,
         itemCount: seletivos.length,
@@ -233,6 +233,25 @@ class BodyHome extends GetView<ProcessoSeletivoController> {
                         height: 8.0,
                       ),
                       _inscreverSe(context, seletivos, index),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () {
+                          controller.fetchResultadoProcessosSeletivoById(
+                              seletivos[index].id!);
+                        },
+                        icon: const Icon(Icons.download),
+                        label: const Text('Resultado do Edital'),
+                        style: ElevatedButton.styleFrom(
+                          side: const BorderSide(
+                            width: 2.0,
+                            color: Color.fromARGB(255, 0, 0, 0),
+                          ),
+                          backgroundColor:
+                              const Color.fromARGB(255, 11, 117, 11),
+                        ),
+                      ),
                     ],
                   ),
                 ],

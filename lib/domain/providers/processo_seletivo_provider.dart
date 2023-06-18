@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
@@ -53,6 +54,34 @@ class ProcessoSeletivoProvider {
         '$api/processo-seletivo/${processoSeletivo.id}',
         data: processoSeletivo.toJson());
 
+    return response;
+  }
+
+  Future<Response> fetchResultadoProcessosSeletivoById(int id) async {
+    final response =
+        await dio.get('$api/processo-seletivo/busca-resultado/$id');
+
+    Map<String, dynamic> base64 = jsonDecode(response.toString());
+
+    String fileName = 'ResultadoEdital.pdf';
+
+    AnchorElement(
+      href:
+          'data:application/octet-stream;charset=utf-16le;base64,${base64['bytes']}',
+    )
+      ..setAttribute('download', fileName)
+      ..click();
+
+    return response;
+  }
+
+  Future<Response> gerarResultadoProcessosSeletivoById(int id) async {
+    GetStorage box = GetStorage();
+    String tokenBox = box.read('token');
+    dio.options.headers["Authorization"] = "Bearer $tokenBox";
+
+    final response =
+        await dio.post('$api/processo-seletivo/gera-resultado/$id');
     return response;
   }
 }

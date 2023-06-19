@@ -109,4 +109,8 @@ class ProcessoSeletivoController extends GetxController {
   Future<void> gerarResultadoProcessosSeletivoById(int id) async {
     await repository.gerarResultadoProcessosSeletivoById(id);
   }
+
+  Future<void> validaParticipantesProcessosSeletivoById(int id) async {
+    await repository.validaParticipantesProcessosSeletivoById(id);
+  }
 }

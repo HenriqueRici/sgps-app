@@ -45,7 +45,7 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
 
   Widget _seletivosPublicados(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    const itemWidth = 300.0;
+    const itemWidth = 400.0;
     final crossAxisCount = (screenWidth / itemWidth).floor();
     return GridView.builder(
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -123,11 +123,37 @@ class BodySeletivo extends GetView<ProcessoSeletivoController> {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    controller.gerarResultadoProcessosSeletivoById(
+                    controller.validaParticipantesProcessosSeletivoById(
                         seletivos[index].id!);
+                    showAlertDialog(context,
+                        'Participantes Validados com Sucesso!', 'Aperte "OK"');
                   },
                   icon: const Icon(
                     Icons.check,
+                    size: 35,
+                  ),
+                  label: const Text('Validar Participantes',
+                      style: TextStyle(fontSize: 18)),
+                  style: ElevatedButton.styleFrom(
+                    side: const BorderSide(
+                      width: 2.0,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                    backgroundColor: const Color.fromARGB(255, 16, 94, 172),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    controller.gerarResultadoProcessosSeletivoById(
+                        seletivos[index].id!);
+                    showAlertDialog(
+                        context, 'Resultado com Sucesso!', 'Aperte "OK"');
+                  },
+                  icon: const Icon(
+                    Icons.picture_as_pdf_outlined,
                     size: 35,
                   ),
                   label: const Text('Gerar Resultado',

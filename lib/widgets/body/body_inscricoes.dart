@@ -127,7 +127,7 @@ class BodyInscricoes extends GetView<ParticipanteController> {
                 _validaCampos(context);
                 await controller.create(controller
                     .dadosParticipante(int.parse(Get.arguments['idSeletivo'])));
-                controller.dispose();
+                controller.disposeDados();
                 Get.toNamed('/');
               },
               icon: const Icon(

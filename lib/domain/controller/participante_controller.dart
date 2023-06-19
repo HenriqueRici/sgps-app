@@ -61,24 +61,19 @@ class ParticipanteController extends GetxController {
     dataIngressoController = TextEditingController();
     senhaController = TextEditingController();
     confirmarSenhaController = TextEditingController();
-    // classeController = TextEditingController();
-    //nivelController = TextEditingController();
     super.onInit();
   }
 
-  @override
-  void dispose() {
+  void disposeDados() {
     nomeController = TextEditingController();
     cpfController = TextEditingController();
     dataNascimentoController = TextEditingController();
     dataIngressoController = TextEditingController();
     senhaController = TextEditingController();
     confirmarSenhaController = TextEditingController();
-    // classeController = TextEditingController();
-    //nivelController = TextEditingController();
+
     setSelectedValueClasse('Selecione');
     setSelectedValueNivel('Selecione');
-    super.dispose();
   }
 
   Participante dadosParticipante(int idSeletivo) {

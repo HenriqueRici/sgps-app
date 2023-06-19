@@ -84,4 +84,14 @@ class ProcessoSeletivoProvider {
         await dio.post('$api/processo-seletivo/gera-resultado/$id');
     return response;
   }
+
+  Future<Response> validaParticipantesProcessosSeletivoById(int id) async {
+    GetStorage box = GetStorage();
+    String tokenBox = box.read('token');
+    dio.options.headers["Authorization"] = "Bearer $tokenBox";
+    final response =
+        await dio.post('$api/processo-seletivo/valida-participantes/$id');
+
+    return response;
+  }
 }

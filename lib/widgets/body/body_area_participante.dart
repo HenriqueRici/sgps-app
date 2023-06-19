@@ -112,67 +112,6 @@ class BodyParticipante extends GetView<AreaParticipanteController> {
     );
   }
 
-  Widget _bodyDadosParticipante(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _data('Nome:', controller.participante$.value.nome!, 'CPF:',
-                  controller.participante$.value.cpf!),
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Obx(
-                () => _data(
-                    'Data Nascimento:',
-                    controller.participante$.value.dataNascimento!,
-                    'Classe:',
-                    controller.participante$.value.classe!),
-              )
-            ],
-          ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _data(
-                  'Data Ingresso:',
-                  controller.participante$.value.dataIngresso!,
-                  'Nível:',
-                  controller.participante$.value.nivel!),
-            ],
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          ElevatedButton.icon(
-            onPressed: () async {
-              await _retificarDados(context, controller.participante$.value);
-            },
-            icon: const Icon(
-              Icons.edit_outlined,
-              size: 35,
-            ),
-            label: const Text('Alterar Dados', style: TextStyle(fontSize: 18)),
-            style: ElevatedButton.styleFrom(
-              side: const BorderSide(
-                width: 2.0,
-                color: Color.fromARGB(255, 0, 0, 0),
-              ),
-              backgroundColor: const Color.fromARGB(255, 224, 5, 5),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   _retificarDados(BuildContext context, Participante participante) {
     TextEditingController nome = TextEditingController();
     TextEditingController cpf = TextEditingController();

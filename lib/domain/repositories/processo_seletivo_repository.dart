@@ -37,4 +37,8 @@ class ProcessoSeletivoRepository {
   Future<Response> gerarResultadoProcessosSeletivoById(int id) async {
     return await provider.gerarResultadoProcessosSeletivoById(id);
   }
+
+  Future<Response> validaParticipantesProcessosSeletivoById(int id) async {
+    return await provider.validaParticipantesProcessosSeletivoById(id);
+  }
 }
